@@ -34,7 +34,7 @@ def regex(parsed_title):
     return regexed_title
 
 
-while count < 20:
+while True:
     start_time = time.time()
     dictionary = None
 
