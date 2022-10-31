@@ -15,7 +15,6 @@ headers = {
 
 count = 1
 fail = 0
-dictionary = {}
 start_time_program = time.time()
 
 
@@ -34,15 +33,22 @@ def regex(parsed_title):
     print(str(count) + ' : ' + str(regexed_title))
     return regexed_title
 
-while True:
+
+while count < 20:
     start_time = time.time()
+    dictionary = None
 
     try:
         title = get_and_parse(count)
         final_title_format = regex(title)
         if final_title_format != '404 Not Found':
+            with open('Series.json', 'r') as r:
+                dictionary = json.load(r)
+
             dictionary[final_title_format] = count
-            print('Adding to Dictionary took %s seconds' % (time.time() - start_time))
+
+            with open('Series.json', 'w') as f:
+                json.dump(dictionary, f)
         # print(bs.prettify())
 
     except TimeoutError or urllib3.exceptions.ConnectTimeoutError or urllib3.connectionpool.HTTPSConnectionPool as e:
@@ -74,5 +80,5 @@ while True:
     time.sleep(5)
 
 print('Getting info about series took overall %s seconds' % (time.time() - start_time_program))
-with open('Series.json', 'w') as f:
-    json.dump(dictionary, f)
+# with open('Series.json', 'w') as f:
+#     json.dump(dictionary, f)
